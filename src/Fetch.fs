@@ -8,6 +8,7 @@ open System
 open Fable.Core
 open Fable.Core.JsInterop
 open Fable.Import
+open Thoth.Json
 
 [<AutoOpen>]
 module Fetch_types =
@@ -355,57 +356,57 @@ let fetch (url: string) (init: RequestProperties list) : JS.Promise<Response> =
 let tryFetch (url: string) (init: RequestProperties list) : JS.Promise<Result<Response, Exception>> =
     fetch url init |> Promise.result
 
-// let fetchAs<'T> (url: string) (decoder: Decode.Decoder<'T>) (init: RequestProperties list) : JS.Promise<'T> =
-//     GlobalFetch.fetch(RequestInfo.Url url, requestProps init)
-//     |> Promise.bind (fun response ->
-//         if not response.Ok
-//         then errorString response |> failwith
-//         else
-//             response.text()
-//             |> Promise.map (fun res ->
-//                 match Decode.fromString decoder res with
-//                 | Ok successValue -> successValue
-//                 | Error error -> failwith error))
+let fetchAs<'T> (url: string) (decoder: Decoder<'T>) (init: RequestProperties list) : JS.Promise<'T> =
+    GlobalFetch.fetch(RequestInfo.Url url, requestProps init)
+    |> Promise.bind (fun response ->
+        if not response.Ok
+        then errorString response |> failwith
+        else
+            response.text()
+            |> Promise.map (fun res ->
+                match Decode.fromString decoder res with
+                | Ok successValue -> successValue
+                | Error error -> failwith error))
 
-// let tryFetchAs (url: string) (decoder: Decode.Decoder<'T>) (init: RequestProperties list) : JS.Promise<Result<'T, string>> =
-//     GlobalFetch.fetch(RequestInfo.Url url, requestProps init)
-//     |> Promise.bind (fun response ->
-//         if not response.Ok
-//         then errorString response |> Error |> Promise.lift
-//         else
-//             response.text()
-//             |> Promise.map (Decode.fromString decoder))
+let tryFetchAs (url: string) (decoder: Decoder<'T>) (init: RequestProperties list) : JS.Promise<Result<'T, string>> =
+    GlobalFetch.fetch(RequestInfo.Url url, requestProps init)
+    |> Promise.bind (fun response ->
+        if not response.Ok
+        then errorString response |> Error |> Promise.lift
+        else
+            response.text()
+            |> Promise.map (Decode.fromString decoder))
 
-// let private sendRecord (url: string) (record:'T) (properties: RequestProperties list) httpMethod : JS.Promise<Response> =
-//     let defaultProps =
-//         [ RequestProperties.Method httpMethod
-//           requestHeaders [ContentType "application/json"]
-//           RequestProperties.Body !^(Encode.Auto.toString(0, record))]
-//     // Append properties after defaultProps to make sure user-defined values
-//     // override the default ones if necessary
-//     List.append defaultProps properties
-//     |> fetch url
+let private sendRecord (url: string) (encoder : Encoder<'T>) (record:'T) (properties: RequestProperties list) httpMethod : JS.Promise<Response> =
+    let defaultProps =
+        [ RequestProperties.Method httpMethod
+          requestHeaders [ContentType "application/json"]
+          RequestProperties.Body !^(Encode.toString 0 (encoder record))]
+    // Append properties after defaultProps to make sure user-defined values
+    // override the default ones if necessary
+    List.append defaultProps properties
+    |> fetch url
 
-// /// Sends a HTTP post with the record serialized as JSON.
-// /// This function already sets the HTTP Method to POST sets the json into the body.
-// let postRecord<'T> (url: string) (record:'T) (properties: RequestProperties list) : JS.Promise<Response> =
-//     sendRecord url record properties HttpMethod.POST
+/// Sends a HTTP post with the record serialized as JSON.
+/// This function already sets the HTTP Method to POST sets the json into the body.
+let postRecord<'T> (url: string) (encoder : Encoder<'T>) (record:'T) (properties: RequestProperties list) : JS.Promise<Response> =
+    sendRecord url encoder record properties HttpMethod.POST
 
-// let tryPostRecord<'T> (url: string) (record:'T) (properties: RequestProperties list) : JS.Promise<Result<Response, Exception>> =
-//     postRecord url record properties |> Promise.result
+let tryPostRecord<'T> (url: string) (encoder : Encoder<'T>) (record:'T) (properties: RequestProperties list) : JS.Promise<Result<Response, Exception>> =
+    postRecord url encoder record properties |> Promise.result
 
-// /// Sends a HTTP put with the record serialized as JSON.
-// /// This function already sets the HTTP Method to PUT, sets the json into the body.
-// let putRecord (url: string) (record:'T) (properties: RequestProperties list): JS.Promise<Response> =
-//     sendRecord url record properties HttpMethod.PUT
+/// Sends a HTTP put with the record serialized as JSON.
+/// This function already sets the HTTP Method to PUT, sets the json into the body.
+let putRecord (url: string) (encoder : Encoder<'T>) (record:'T) (properties: RequestProperties list): JS.Promise<Response> =
+    sendRecord url encoder record properties HttpMethod.PUT
 
-// let tryPutRecord (url: string) (record:'T) (properties: RequestProperties list): JS.Promise<Result<Response, Exception>> =
-//     putRecord url record properties |> Promise.result
+let tryPutRecord (url: string) (encoder : Encoder<'T>) (record:'T) (properties: RequestProperties list): JS.Promise<Result<Response, Exception>> =
+    putRecord url encoder record properties |> Promise.result
 
-// /// Sends a HTTP patch with the record serialized as JSON.
-// /// This function already sets the HTTP Method to PATCH sets the json into the body.
-// let patchRecord (url: string) (record:'T) (properties: RequestProperties list) : JS.Promise<Response> =
-//     sendRecord url record properties HttpMethod.PATCH
+/// Sends a HTTP patch with the record serialized as JSON.
+/// This function already sets the HTTP Method to PATCH sets the json into the body.
+let patchRecord (url: string) (encoder : Encoder<'T>) (record:'T) (properties: RequestProperties list) : JS.Promise<Response> =
+    sendRecord url encoder record properties HttpMethod.PATCH
 
 /// Sends a HTTP OPTIONS request.
 let tryOptionsRequest (url:string) : JS.Promise<Result<Response, Exception>> =

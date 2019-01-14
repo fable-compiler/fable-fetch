@@ -16,5 +16,6 @@
     <PackageReference Include="Fable.Core" Version="2.0.2" />
     <PackageReference Include="Fable.Import.Browser" Version="1.3.0" />
     <PackageReference Include="Fable.Promise" Version="1.0.0" />
+    <PackageReference Include="Thoth.Json" Version="3.0.0-beta-002" />
   </ItemGroup>
 </Project>

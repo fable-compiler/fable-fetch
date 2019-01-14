@@ -7,6 +7,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fable.Core" Version="2.0.2" />
+    <PackageReference Include="Thoth.Json" Version="3.0.0-beta-002" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\Fable.Fetch.fsproj" />

@@ -6,11 +6,13 @@
     "pretest": "fable-splitter tests -o build --commonjs",
     "test": "mocha build -t 10000"
   },
-  "dependencies": {
-    "fable-compiler": "^2.1.6",
+  "devDependencies": {
     "fable-publish-utils": "^1.0.0",
     "fable-splitter": "^2.1.0",
-    "isomorphic-fetch": "^2.2.1",
     "mocha": "^5.2.0"
+  },
+  "dependencies": {
+    "fable-compiler": "^2.1.10",
+    "isomorphic-fetch": "^2.2.1"
   }
 }

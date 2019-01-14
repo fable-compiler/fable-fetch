@@ -4,6 +4,7 @@ open Fable.Core
 open Fable.Core.JsInterop
 open Fable.Import
 open Fetch
+open Thoth.Json
 
 importSideEffects "isomorphic-fetch"
 
@@ -16,65 +17,65 @@ let it (msg: string) (f: unit->JS.Promise<'T>): unit = jsNative
 [<Global>]
 let describe (msg: string) (f: unit->unit): unit = jsNative
 
-// module RandomUser =
+module RandomUser =
 
-//     type UserName =
-//         { Title : string
-//           First : string
-//           Last : string }
+    type UserName =
+        { Title : string
+          First : string
+          Last : string }
 
-//         static member Decoder =
-//             Decode.object (fun get ->
-//                 { Title = get.Required.Field "title" Decode.string
-//                   First = get.Required.Field "first" Decode.string
-//                   Last = get.Required.Field "last" Decode.string } : UserName
-//             )
+        static member Decoder =
+            Decode.object (fun get ->
+                { Title = get.Required.Field "title" Decode.string
+                  First = get.Required.Field "first" Decode.string
+                  Last = get.Required.Field "last" Decode.string } : UserName
+            )
 
-//     type UserDob =
-//         { Date : string
-//           Age : int }
+    type UserDob =
+        { Date : string
+          Age : int }
 
-//         static member Decoder =
-//             Decode.object (fun get ->
-//                 { Date = get.Required.Field "date" Decode.string
-//                   Age = get.Required.Field "age" Decode.int } : UserDob
-//             )
+        static member Decoder =
+            Decode.object (fun get ->
+                { Date = get.Required.Field "date" Decode.string
+                  Age = get.Required.Field "age" Decode.int } : UserDob
+            )
 
-//     type User =
-//         { Gender : string
-//           Name : UserName
-//           Dob : UserDob }
+    type User =
+        { Gender : string
+          Name : UserName
+          Dob : UserDob }
 
-//         static member Decoder =
-//             Decode.object (fun get ->
-//                 { Gender = get.Required.Field "gender" Decode.string
-//                   Name = get.Required.Field "name" UserName.Decoder
-//                   Dob = get.Required.Field "dob" UserDob.Decoder } : User
-//             )
+        static member Decoder =
+            Decode.object (fun get ->
+                { Gender = get.Required.Field "gender" Decode.string
+                  Name = get.Required.Field "name" UserName.Decoder
+                  Dob = get.Required.Field "dob" UserDob.Decoder } : User
+            )
 
-//     type ApiInfo =
-//         { Seed : string
-//           Results : int
-//           Page : int
-//           Version : string }
+    type ApiInfo =
+        { Seed : string
+          Results : int
+          Page : int
+          Version : string }
 
-//         static member Decoder =
-//             Decode.object (fun get ->
-//                 { Seed = get.Required.Field "seed" Decode.string
-//                   Results = get.Required.Field "results" Decode.int
-//                   Page = get.Required.Field "page" Decode.int
-//                   Version = get.Required.Field "version" Decode.string } : ApiInfo
-//             )
+        static member Decoder =
+            Decode.object (fun get ->
+                { Seed = get.Required.Field "seed" Decode.string
+                  Results = get.Required.Field "results" Decode.int
+                  Page = get.Required.Field "page" Decode.int
+                  Version = get.Required.Field "version" Decode.string } : ApiInfo
+            )
 
-//     type ApiResult =
-//         { Results : User list
-//           Info : ApiInfo }
+    type ApiResult =
+        { Results : User list
+          Info : ApiInfo }
 
-//         static member Decoder =
-//             Decode.object (fun get ->
-//                 { Results = get.Required.Field "results" (Decode.list User.Decoder)
-//                   Info = get.Required.Field "info" ApiInfo.Decoder } : ApiResult
-//             )
+        static member Decoder =
+            Decode.object (fun get ->
+                { Results = get.Required.Field "results" (Decode.list User.Decoder)
+                  Info = get.Required.Field "info" ApiInfo.Decoder } : ApiResult
+            )
 
 describe "Fetch tests" <| fun _ ->
     it "fetch: requests work" <| fun () ->
@@ -171,93 +172,93 @@ describe "Fetch tests" <| fun _ ->
         |> Promise.map (fun results ->
             results |> equal failMessage)
 
-    // it "fetchAs: works with manual decoder" <| fun () ->
-    //     fetchAs "https://randomuser.me/api" RandomUser.ApiResult.Decoder []
-    //     |> Promise.map (fun result ->
-    //         equal result.Info.Page 1
-    //     )
+    it "fetchAs: works with manual decoder" <| fun () ->
+        fetchAs "https://randomuser.me/api" RandomUser.ApiResult.Decoder []
+        |> Promise.map (fun result ->
+            equal result.Info.Page 1
+        )
 
-    // it "fetchAs: fails if the decoder fail" <| fun () ->
-    //     fetchAs "https://randomuser.me/api" RandomUser.UserName.Decoder []
-    //     |> Promise.map (fun user ->
-    //         user.First
-    //     )
-    //     |> Promise.catch (fun error ->
-    //         error.Message
-    //     )
-    //     |> Promise.map(fun res ->
-    //         res.StartsWith("Error at: `$.title`\nExpecting an object with a field named `title` but instead got:")
-    //         |> equal true
-    //     )
+    it "fetchAs: fails if the decoder fail" <| fun () ->
+        fetchAs "https://randomuser.me/api" RandomUser.UserName.Decoder []
+        |> Promise.map (fun user ->
+            user.First
+        )
+        |> Promise.catch (fun error ->
+            error.Message
+        )
+        |> Promise.map(fun res ->
+            res.StartsWith("Error at: `$`\nExpecting an object with a field named `title` but instead got:")
+            |> equal true
+        )
 
-    // it "fetchAs: works with auto decoder" <| fun () ->
-    //     let apiResultDecoder = Decode.Auto.generateDecoder<RandomUser.ApiResult>(isCamelCase = true)
-    //     fetchAs "https://randomuser.me/api" apiResultDecoder []
-    //     |> Promise.map (fun result ->
-    //         equal result.Info.Page 1
-    //     )
+    it "fetchAs: works with auto decoder" <| fun () ->
+        let apiResultDecoder = Decode.Auto.generateDecoder<RandomUser.ApiResult>(isCamelCase = true)
+        fetchAs "https://randomuser.me/api" apiResultDecoder []
+        |> Promise.map (fun result ->
+            equal result.Info.Page 1
+        )
 
-    // it "fetchAs: fails if the auto decoder fail" <| fun () ->
-    //     let userNameDecoder = Decode.Auto.generateDecoder<RandomUser.UserName>(isCamelCase = true)
-    //     fetchAs "https://randomuser.me/api" userNameDecoder []
-    //     |> Promise.map (fun user ->
-    //         user.First
-    //     )
-    //     |> Promise.catch (fun error ->
-    //         error.Message
-    //     )
-    //     |> Promise.map(fun res ->
-    //         res.StartsWith("Error at: `$.last`\nExpecting an object with a field named `last` but instead got:")
-    //         |> equal true
-    //     )
+    it "fetchAs: fails if the auto decoder fail" <| fun () ->
+        let userNameDecoder = Decode.Auto.generateDecoder<RandomUser.UserName>(isCamelCase = true)
+        fetchAs "https://randomuser.me/api" userNameDecoder []
+        |> Promise.map (fun user ->
+            user.First
+        )
+        |> Promise.catch (fun error ->
+            error.Message
+        )
+        |> Promise.map(fun res ->
+            res.StartsWith("Error at: `$`\nExpecting an object with a field named `last` but instead got:")
+            |> equal true
+        )
 
-    // it "tryFetchAs: works with manual decoder" <| fun () ->
-    //     tryFetchAs "https://randomuser.me/api" RandomUser.ApiResult.Decoder []
-    //     |> Promise.map (fun result ->
-    //         match result with
-    //         | Ok result ->
-    //             equal result.Info.Page 1
-    //         | Error _ ->
-    //             failwith "This test should succeed"
-    //     )
+    it "tryFetchAs: works with manual decoder" <| fun () ->
+        tryFetchAs "https://randomuser.me/api" RandomUser.ApiResult.Decoder []
+        |> Promise.map (fun result ->
+            match result with
+            | Ok result ->
+                equal result.Info.Page 1
+            | Error _ ->
+                failwith "This test should succeed"
+        )
 
-    // it "tryFetchAs: fails if the decoder fail" <| fun () ->
-    //     tryFetchAs "https://randomuser.me/api" RandomUser.UserName.Decoder []
-    //     |> Promise.map (fun result ->
-    //         match result with
-    //         | Ok _ ->
-    //             failwith "This test should fail"
-    //         | Error msg -> msg
-    //     )
-    //     |> Promise.map(fun res ->
-    //         res.StartsWith("Error at: `$.title`\nExpecting an object with a field named `title` but instead got:")
-    //         |> equal true
-    //     )
+    it "tryFetchAs: fails if the decoder fail" <| fun () ->
+        tryFetchAs "https://randomuser.me/api" RandomUser.UserName.Decoder []
+        |> Promise.map (fun result ->
+            match result with
+            | Ok _ ->
+                failwith "This test should fail"
+            | Error msg -> msg
+        )
+        |> Promise.map(fun res ->
+            res.StartsWith("Error at: `$`\nExpecting an object with a field named `title` but instead got:")
+            |> equal true
+        )
 
-    // it "tryFetchAs: works with auto decoder" <| fun () ->
-    //     let apiResultDecoder = Decode.Auto.generateDecoder<RandomUser.ApiResult>(isCamelCase = true)
-    //     tryFetchAs "https://randomuser.me/api" apiResultDecoder []
-    //     |> Promise.map (fun result ->
-    //         match result with
-    //         | Ok result ->
-    //             equal result.Info.Page 1
-    //         | Error _ ->
-    //             failwith "This test should succeed"
-    //     )
+    it "tryFetchAs: works with auto decoder" <| fun () ->
+        let apiResultDecoder = Decode.Auto.generateDecoder<RandomUser.ApiResult>(isCamelCase = true)
+        tryFetchAs "https://randomuser.me/api" apiResultDecoder []
+        |> Promise.map (fun result ->
+            match result with
+            | Ok result ->
+                equal result.Info.Page 1
+            | Error _ ->
+                failwith "This test should succeed"
+        )
 
-    // it "tryFetchAs: fails if the auto decoder fail" <| fun () ->
-    //     let userNameDecoder = Decode.Auto.generateDecoder<RandomUser.UserName>(isCamelCase = true)
-    //     tryFetchAs "https://randomuser.me/api" userNameDecoder []
-    //     |> Promise.map (fun result ->
-    //         match result with
-    //         | Ok _ ->
-    //             failwith "This test should fail"
-    //         | Error msg -> msg
-    //     )
-    //     |> Promise.catch (fun error ->
-    //         error.Message
-    //     )
-    //     |> Promise.map(fun res ->
-    //         res.StartsWith("Error at: `$.last`\nExpecting an object with a field named `last` but instead got:")
-    //         |> equal true
-    //     )
+    it "tryFetchAs: fails if the auto decoder fail" <| fun () ->
+        let userNameDecoder = Decode.Auto.generateDecoder<RandomUser.UserName>(isCamelCase = true)
+        tryFetchAs "https://randomuser.me/api" userNameDecoder []
+        |> Promise.map (fun result ->
+            match result with
+            | Ok _ ->
+                failwith "This test should fail"
+            | Error msg -> msg
+        )
+        |> Promise.catch (fun error ->
+            error.Message
+        )
+        |> Promise.map(fun res ->
+            res.StartsWith("Error at: `$`\nExpecting an object with a field named `last` but instead got:")
+            |> equal true
+        )
