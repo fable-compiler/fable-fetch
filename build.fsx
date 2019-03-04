@@ -1,5 +1,4 @@
-module Main
-
+#load "node_modules/fable-publish-utils/PublishUtils.fs"
 open PublishUtils
 
 run "npm test"

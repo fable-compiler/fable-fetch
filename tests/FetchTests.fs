@@ -2,7 +2,6 @@ module FetchTests
 
 open Fable.Core
 open Fable.Core.JsInterop
-open Fable.Import
 open Fetch
 
 importSideEffects "isomorphic-fetch"

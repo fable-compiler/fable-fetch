@@ -7,16 +7,16 @@ module Fetch
 open System
 open Fable.Core
 open Fable.Core.JsInterop
-open Fable.Import
+open Browser.Types
 
 [<AutoOpen>]
-module Fetch_types =
+module Types =
 
     type Body =
         abstract bodyUsed: bool with get, set
         abstract arrayBuffer: unit -> JS.Promise<JS.ArrayBuffer>
-        abstract blob: unit -> JS.Promise<Browser.Blob>
-        abstract formData: unit -> JS.Promise<Browser.FormData>
+        abstract blob: unit -> JS.Promise<Blob>
+        // abstract formData: unit -> JS.Promise<FormData>
         abstract json : unit -> JS.Promise<obj>
         abstract json<'T> : unit -> JS.Promise<'T>
         abstract text : unit -> JS.Promise<string>
@@ -246,10 +246,10 @@ module Fetch_types =
         abstract headers: HeaderInit option with get, set
 
     and HeaderInit =
-        U2<Headers, ResizeArray<string>>
+        U2<Headers, string[]>
 
     and BodyInit =
-        U3<Browser.Blob, Browser.FormData, string>
+        U2<Blob, string> // U3<Blob, FormData, string>
 
     [<Erase; RequireQualifiedAccess; NoComparison>]
     type RequestInfo =
