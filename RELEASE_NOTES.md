@@ -1,3 +1,7 @@
+### 2.0.0
+
+* Use stable versions for dependencies
+
 ### 2.0.0-beta-001
 
 * Update Fable.Core dependency
