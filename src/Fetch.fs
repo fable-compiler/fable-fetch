@@ -16,7 +16,7 @@ module Types =
         abstract bodyUsed: bool with get, set
         abstract arrayBuffer: unit -> JS.Promise<JS.ArrayBuffer>
         abstract blob: unit -> JS.Promise<Blob>
-        // abstract formData: unit -> JS.Promise<FormData>
+        abstract formData: unit -> JS.Promise<FormData>
         abstract json : unit -> JS.Promise<obj>
         abstract json<'T> : unit -> JS.Promise<'T>
         abstract text : unit -> JS.Promise<string>
@@ -249,7 +249,7 @@ module Types =
         U2<Headers, string[]>
 
     and BodyInit =
-        U2<Blob, string> // U3<Blob, FormData, string>
+        U3<Blob, FormData, string>
 
     [<Erase; RequireQualifiedAccess; NoComparison>]
     type RequestInfo =

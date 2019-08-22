@@ -13,7 +13,7 @@
     <Content Include="*.fsproj; *.fs" PackagePath="fable\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Fable.Browser.Blob" Version="1.0.0" />
+    <PackageReference Include="Fable.Browser.Blob" Version="1.1.0" />
     <PackageReference Include="Fable.Core" Version="3.0.0" />
     <PackageReference Include="Fable.Promise" Version="2.0.0" />
   </ItemGroup>
