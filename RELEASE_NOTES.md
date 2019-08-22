@@ -1,3 +1,7 @@
+### 2.1.0
+
+* `FormData` support
+
 ### 2.0.0
 
 * Use stable versions for dependencies
