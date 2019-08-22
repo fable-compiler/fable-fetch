@@ -145,10 +145,10 @@ describe "Fetch tests" <| fun _ ->
         tryFetch "http://this-must-be-an-invalid-url-no-really-i-mean-it.com" []
         |> Promise.map (fun a ->
             match a with
-            | Ok a -> "failed"
-            | Error e -> e.Message)
+            | Ok a -> "success"
+            | Error e -> "failure")
         |> Promise.map (fun results ->
-            results |> equal "request to http://this-must-be-an-invalid-url-no-really-i-mean-it.com failed, reason: getaddrinfo ENOTFOUND this-must-be-an-invalid-url-no-really-i-mean-it.com this-must-be-an-invalid-url-no-really-i-mean-it.com:80")
+            results |> equal "failure")
 
     it "tryOptionsRequest: Successful HTTP OPTIONS request" <| fun () ->
         let successMessage = "OPTIONS request accepted (method allowed)"
