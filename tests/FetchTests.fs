@@ -5,6 +5,7 @@ open Fable.Core.JsInterop
 open Fetch
 
 importSideEffects "isomorphic-fetch"
+importSideEffects "abortcontroller-polyfill/dist/polyfill-patch-fetch"
 
 let inline equal (expected: 'T) (actual: 'T): unit =
     Testing.Assert.AreEqual(expected, actual)
@@ -169,6 +170,23 @@ describe "Fetch tests" <| fun _ ->
             | Error e -> failMessage)
         |> Promise.map (fun results ->
             results |> equal failMessage)
+
+    it "fetch: request can be aborted" <| fun () ->
+        let abortController = newAbortController()
+        let props = [ RequestProperties.Signal abortController.signal ]
+
+        let failMessage = "Request was aborted"
+        let promise =
+          tryFetch "https://fable.io" props
+          |> Promise.map (function
+              | Error e when e.Message = "Aborted" -> failMessage
+              | Ok a -> "Request was never cancelled"
+              | Error e -> "Something else went wrong")
+          |> Promise.map (fun results ->
+              results |> equal failMessage)
+
+        abortController.abort()
+        promise
 
     // it "fetchAs: works with manual decoder" <| fun () ->
     //     fetchAs "https://randomuser.me/api" RandomUser.ApiResult.Decoder []
