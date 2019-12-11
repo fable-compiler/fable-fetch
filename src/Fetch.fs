@@ -60,6 +60,16 @@ module Types =
         | [<CompiledName("force-cache")>]Forcecache
         | [<CompiledName("only-if-cached")>]Onlyifcached
 
+    and [<StringEnum; RequireQualifiedAccess>] RedirectMode =
+        | Follow | Error | Manual
+
+    and [<StringEnum; RequireQualifiedAccess>] ReferrerPolicy =
+        | [<CompiledName("no-referrer")>]NoReferrer
+        | [<CompiledName("no-referrer-when-downgrade")>]NoReferrerWhenDowngrade
+        | Origin
+        | [<CompiledName("origin-when-cross-origin")>]OriginWhenCrossOrigin
+        | [<CompiledName("unsafe-url")>]UnsafeUrl
+
     and Headers =
         abstract append : string * string -> unit
         abstract delete : string -> unit
@@ -325,6 +335,14 @@ module Types =
         | [<CompiledName("X-Csrf-Token")>] XCsrfToken of string
         | [<Erase>] Custom of key:string * value:obj
 
+    type AbortSignal =
+      abstract aborted : bool with get
+      abstract onabort : (unit -> unit) with get, set
+
+    type AbortController =
+      abstract signal : AbortSignal with get
+      abstract abort : (unit -> unit) with get
+
     [<NoComparison>]
     type RequestProperties =
         | Method of HttpMethod
@@ -333,7 +351,15 @@ module Types =
         | Mode of RequestMode
         | Credentials of RequestCredentials
         | Cache of RequestCache
+        | Redirect of RedirectMode
+        | Referrer of string
+        | ReferrerPolicy of ReferrerPolicy
+        | Integrity of string
+        | KeepAlive of bool
+        | Signal of AbortSignal
 
+[<Emit("new AbortController()")>]
+let newAbortController () : AbortController = jsNative
 
 let inline requestHeaders (headers: HttpRequestHeaders list) =
     RequestProperties.Headers(keyValueList CaseRules.None headers :?> IHttpRequestHeaders)
