@@ -1,3 +1,7 @@
+### 2.2.0
+
+* PR #8: More optional parameters and enable aborting fetch signal @istreeter
+
 ### 2.1.0
 
 * `FormData` support
