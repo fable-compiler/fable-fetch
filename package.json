@@ -1,17 +1,15 @@
 {
   "private": true,
   "scripts": {
-    "build": "fable build.fsx --run",
-    "pretest": "fable-splitter tests -o build --commonjs",
+    "postinstall": "dotnet tool restore",
+    "build": "dotnet fable src -o build",
+    "pretest": "dotnet fable tests -o build",
     "test": "mocha build -t 10000"
   },
   "dependencies": {
     "abortcontroller-polyfill": "^1.4.0",
-    "fable-compiler": "^2.4.11",
-    "fable-compiler-js": "^1.2.1",
-    "fable-publish-utils": "^1.1.1",
-    "fable-splitter": "^2.1.11",
-    "isomorphic-fetch": "^2.2.1",
-    "mocha": "^6.2.0"
+    "fable-publish-utils": "^2.0.0",
+    "isomorphic-fetch": "^3.0.0",
+    "mocha": "^8.2.1"
   }
 }
