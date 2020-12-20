@@ -5,7 +5,7 @@ open Fable.Core.JsInterop
 open Fetch
 
 importSideEffects "isomorphic-fetch"
-importSideEffects "abortcontroller-polyfill/dist/polyfill-patch-fetch"
+importSideEffects "abortcontroller-polyfill/dist/polyfill-patch-fetch.js"
 
 let inline equal (expected: 'T) (actual: 'T): unit =
     Testing.Assert.AreEqual(expected, actual)
