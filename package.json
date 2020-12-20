@@ -1,5 +1,6 @@
 {
   "private": true,
+  "type": "module",
   "scripts": {
     "postinstall": "dotnet tool restore",
     "build": "dotnet fable src -o build",
