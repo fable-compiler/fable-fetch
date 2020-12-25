@@ -23,3 +23,5 @@ let fetchGitHubUser accessToken =
     let! item = response.json<IUser>() |> Async.AwaitPromise
   }
 ```
+
+Check the [tests](https://github.com/fable-compiler/fable-fetch/blob/master/tests/FetchTests.fs) for other examples.
