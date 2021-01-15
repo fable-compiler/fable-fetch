@@ -6,3 +6,22 @@ If you need helpers for automatic JSON serialization, check [Thoth.Fetch](https:
 
 - Run tests: `npm test`
 - Publish: `npm run build Publish`
+
+## Usage
+
+```fsharp
+type IUser =
+  abstract name: string
+
+let fetchGitHubUser accessToken =
+  async {
+    let! response = 
+     fetch "https://api.github.com/user" [
+          requestHeaders [
+              HttpRequestHeaders.Authorization $"token {accessToken}"
+          ] ] |> Async.AwaitPromise
+    let! item = response.json<IUser>() |> Async.AwaitPromise
+  }
+```
+
+Check the [tests](https://github.com/fable-compiler/fable-fetch/blob/master/tests/FetchTests.fs) for other examples.
