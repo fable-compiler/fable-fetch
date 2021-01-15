@@ -8,7 +8,7 @@
     "test": "mocha build -t 10000"
   },
   "dependencies": {
-    "abortcontroller-polyfill": "^1.7.1",
+    "abortcontroller-polyfill": "^1.4.0",
     "fable-publish-utils": "^2.0.0",
     "isomorphic-fetch": "^3.0.0",
     "mocha": "^8.2.1"
