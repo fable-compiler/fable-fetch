@@ -8,7 +8,7 @@
     <Compile Include="Main.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Fable.Core" Version="2.0.2" />
+    <PackageReference Include="Fable.Core" Version="3.2.3" />
     <PackageReference Include="Fable.Import.Node" Version="0.4.3" />
   </ItemGroup>
 </Project>
