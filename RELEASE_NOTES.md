@@ -1,3 +1,9 @@
+### 2.3.1
+
+* Downgrade FSharp.Core to 4.7.2
+* Upgrade to Fable.Promise 2.2.2
+* Upgrade to Fable.Browser.Blob 1.1.3
+
 ### 2.3.0
 
 * Upgrade to Fable.Promise 2.2.1

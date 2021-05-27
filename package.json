@@ -5,12 +5,11 @@
         "postinstall": "dotnet tool restore",
         "build": "dotnet fable src -o build",
         "pretest": "dotnet fable tests -o build",
-        "test": "mocha -r esm build -t 10000",
+        "test": "mocha build -t 10000",
         "publish": "dotnet fsi build.fsx Publish"
     },
     "devDependencies": {
         "abortcontroller-polyfill": "^1.7.1",
-        "esm": "^3.2.25",
         "fable-publish-utils": "^2.1.0",
         "isomorphic-fetch": "^3.0.0",
         "mocha": "^8.2.1"
