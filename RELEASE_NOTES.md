@@ -1,3 +1,7 @@
+### 2.2.1
+
+* Add package license file (by @nojaf)
+
 ### 2.2.0
 
 * PR #8: More optional parameters and enable aborting fetch signal @istreeter
