@@ -5,7 +5,7 @@ Fable bindings for Browsers' [Fetch API](https://developer.mozilla.org/en-US/doc
 If you need helpers for automatic JSON serialization, check [Thoth.Fetch](https://github.com/thoth-org/Thoth.Fetch#thothfetch-).
 
 - Run tests: `npm test`
-- Publish: `npm run build Publish`
+- Publish: `npm run publish`
 
 ## Usage
 
@@ -15,7 +15,7 @@ type IUser =
 
 let fetchGitHubUser accessToken =
   async {
-    let! response = 
+    let! response =
      fetch "https://api.github.com/user" [
           requestHeaders [
               HttpRequestHeaders.Authorization $"token {accessToken}"
