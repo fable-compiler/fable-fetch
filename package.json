@@ -5,7 +5,8 @@
         "postinstall": "dotnet tool restore",
         "build": "dotnet fable src -o build",
         "pretest": "dotnet fable tests -o build",
-        "test": "mocha -r esm build -t 10000"
+        "test": "mocha -r esm build -t 10000",
+        "publish": "dotnet fsi build.fsx Publish"
     },
     "devDependencies": {
         "abortcontroller-polyfill": "^1.7.1",
