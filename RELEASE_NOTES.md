@@ -1,3 +1,8 @@
+### 2.3.0
+
+* Upgrade to Fable.Promise 2.2.1
+* Upgrade to Fable.Browser.Blob 1.1.2
+
 ### 2.2.1
 
 * Add package license file (by @nojaf)

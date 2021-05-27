@@ -1,7 +1,7 @@
 <Project>
     <!-- NuGet Metadata -->
     <PropertyGroup>
-        <PackageProjectUrl>http://fable.io</PackageProjectUrl>
+        <PackageProjectUrl>https://fable.io</PackageProjectUrl>
         <RepositoryUrl>https://github.com/fable-compiler/fable-fetch</RepositoryUrl>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageIcon>fable_logo.png</PackageIcon>
