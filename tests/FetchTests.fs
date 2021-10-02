@@ -63,9 +63,9 @@ describe "Fetch tests" <| fun _ ->
         tryFetch "https://fable.io" props
         |> Promise.map (fun a ->
             match a with
-            | Ok a -> a.Status
-            | Error _ -> -1)
-        |> Promise.map (fun results -> results |> equal 405)
+            | Ok a -> Some a.Status
+            | Error _ -> None)
+        |> Promise.map (fun results -> results |> equal (Some 405))
 
     it "tryFetch: exception returns an Error" <| fun () ->
         tryFetch "http://this-must-be-an-invalid-url-no-really-i-mean-it.com" []
@@ -88,9 +88,9 @@ describe "Fetch tests" <| fun _ ->
         tryOptionsRequest "https://fable.io"
         |> Promise.map (fun a ->
             match a with
-            | Ok a -> a.Status
-            | Error _ -> -1)
-        |> Promise.map (fun results -> results |> equal 405)
+            | Ok a -> Some a.Status
+            | Error _ -> None)
+        |> Promise.map (fun results -> results |> equal (Some 405))
 
     it "fetch: request can be aborted" <| fun () ->
         let abortController = newAbortController()
