@@ -188,6 +188,20 @@ describe "Fetch tests" <| fun _ ->
         abortController.abort()
         promise
 
+    it "fetchUnsafe: invalid URL returns 404 (Not Found)" <| fun () ->
+        promise {
+            let! res = fetchUnsafe "https://fable.io/this-must-be-an-invalid-url-no-really-i-mean-it" []
+            return res.Status
+        }
+        |> Promise.map (fun results -> results |> equal 404)
+
+    it "fetchUnsafe: HTTP OPTIONS request on Fable.io returns 405 (Method not allowed)" <| fun () ->
+        promise {
+            let! res = fetchUnsafe "https://fable.io" [ RequestProperties.Method HttpMethod.OPTIONS ]
+            return res.Status
+        }
+        |> Promise.map (fun results -> results |> equal 405)
+
     // it "fetchAs: works with manual decoder" <| fun () ->
     //     fetchAs "https://randomuser.me/api" RandomUser.ApiResult.Decoder []
     //     |> Promise.map (fun result ->
