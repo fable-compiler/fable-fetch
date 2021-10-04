@@ -378,6 +378,10 @@ let fetch (url: string) (init: RequestProperties list) : JS.Promise<Response> =
         then response
         else errorString response |> failwith)
 
+/// Retrieves data from the specified resource without check for 2xx status.
+let fetchUnsafe (url: string) (init: RequestProperties list) : JS.Promise<Response> =
+    GlobalFetch.fetch(RequestInfo.Url url, requestProps init)
+
 let tryFetch (url: string) (init: RequestProperties list) : JS.Promise<Result<Response, Exception>> =
     fetch url init |> Promise.result
 
