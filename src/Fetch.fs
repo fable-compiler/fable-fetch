@@ -367,9 +367,16 @@ let inline requestHeaders (headers: HttpRequestHeaders list) =
 let inline requestProps (props: RequestProperties list) =
     keyValueList CaseRules.LowerFirst props :?> RequestInit
 
-/// Retrieves data from the specified resource.
+let private errorString (response: Response) =
+    string response.Status + " " + response.StatusText + " for URL " + response.Url
+
+/// Retrieves data from the specified resource. Fails if `response.Ok` evals to false.
 let fetch (url: string) (init: RequestProperties list) : JS.Promise<Response> =
     GlobalFetch.fetch(RequestInfo.Url url, requestProps init)
+    |> Promise.map (fun response ->
+        if response.Ok
+        then response
+        else errorString response |> failwith)
 
 let tryFetch (url: string) (init: RequestProperties list) : JS.Promise<Result<Response, Exception>> =
     fetch url init |> Promise.result
