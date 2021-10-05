@@ -1,3 +1,8 @@
+### 2.4.0
+
+* Add fetchUnsafe @bebersdocks
+
+
 ### 2.3.1
 
 * Downgrade FSharp.Core to 4.7.2
