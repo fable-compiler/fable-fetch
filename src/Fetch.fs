@@ -403,10 +403,10 @@ module Types =
         | Signal of AbortSignal
 
 type Response with
-    [<Emit("Response.json($0, $1)")>]
+    [<Emit("Response.json($0...)")>]
     static member json<'T>(value: 'T, ?status: int): Response = jsNative
 
-    [<Emit("Response.redirect($0, $1)")>]
+    [<Emit("Response.redirect($0...)")>]
     static member redirect(url: string, ?status: int): Response = jsNative
 
     [<Emit("Response.error()")>]

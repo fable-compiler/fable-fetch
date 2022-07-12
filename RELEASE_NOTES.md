@@ -1,7 +1,10 @@
+### 2.5.0
+
+* Add missing props and fix Request.clone() @AngelMunoz
+
 ### 2.4.0
 
 * Add fetchUnsafe @bebersdocks
-
 
 ### 2.3.1
 
