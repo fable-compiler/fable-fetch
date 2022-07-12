@@ -11,6 +11,28 @@ open Browser.Types
 
 [<AutoOpen>]
 module Types =
+    [<StringEnum; RequireQualifiedAccess>]
+    type RequestDestination =
+        | [<CompiledName("")>] Empty
+        | Audio
+        | [<CompiledName("audioworklet")>] AudioWorklet
+        | Document
+        | Embed
+        | Font
+        | Frame
+        | Iframe
+        | Image
+        | Manifest
+        | Object
+        | [<CompiledName("paintworklet")>] PaintWorklet
+        | Report
+        | Script
+        | [<CompiledName("sharedworker")>] SharedWorker
+        | Style
+        | Track
+        | Video
+        | Worker
+        | [<CompiledName("xslt")>] XSLT
 
     type Body =
         abstract bodyUsed: bool with get, set
@@ -26,19 +48,31 @@ module Types =
         abstract ``method`` : string with get
         abstract url: string with get
         abstract headers: Headers with get
+        abstract destination : RequestDestination with get
         abstract referrer: string with get
+        abstract referrerPolicy: ReferrerPolicy with get
         abstract mode: U2<string,RequestMode> with get
         abstract credentials: U2<string,RequestCredentials> with get
         abstract cache: U2<string,RequestCache> with get
-        abstract clone: unit -> unit
+        abstract redirect: RedirectMode with get
+        abstract integrity: string with get
+        abstract keepalive: bool with get
+        abstract isReloadNavigation: bool with get
+        abstract isHistoryNavigation: bool with get
+        abstract clone: unit -> Request
 
     and RequestInit =
         abstract ``method``: string option with get, set
         abstract headers: HeaderInit option with get, set
         abstract body: BodyInit option with get, set
+        abstract referrer: string with get, set
+        abstract referrerPolicy: ReferrerPolicy with get, set
         abstract mode: RequestMode option with get, set
         abstract credentials: RequestCredentials option with get, set
         abstract cache: RequestCache option with get, set
+        abstract redirect: RedirectMode with get, set
+        abstract integrity: string with get, set
+        abstract keepalive: bool with get, set
 
     and [<StringEnum; RequireQualifiedAccess>] RequestContext =
         | Audio | Beacon | Cspreport | Download | Embed | Eventsource | Favicon | Fetch | Font
@@ -232,6 +266,10 @@ module Types =
     and Response = //(?body: BodyInit, ?init: ResponseInit) =
         inherit Body
 
+        [<Emit("$0.type")>] abstract Type: ResponseType
+
+        [<Emit("$0.redirected")>] abstract Redirected: bool
+
         /// Verifies that the fetch was successful
         [<Emit("$0.ok")>] abstract Ok: bool
 
@@ -246,6 +284,9 @@ module Types =
 
         /// Returns the headers objct
         [<Emit("$0.headers")>] abstract Headers : Headers
+
+        [<Emit("$0.clone()")>] abstract clone: unit -> Response
+
 
     and [<StringEnum; RequireQualifiedAccess>] ResponseType =
         | Basic | Cors | Default | Error | Opaque
@@ -336,8 +377,11 @@ module Types =
         | [<Erase>] Custom of key:string * value:obj
 
     type AbortSignal =
+      inherit Browser.Types.EventTarget
       abstract aborted : bool with get
       abstract onabort : (unit -> unit) with get, set
+      abstract reason: obj with get
+      abstract throwIfAborted: unit -> unit
 
     type AbortController =
       abstract signal : AbortSignal with get
@@ -357,6 +401,16 @@ module Types =
         | Integrity of string
         | KeepAlive of bool
         | Signal of AbortSignal
+
+type Response with
+    [<Emit("Response.json($0, $1)")>]
+    static member json<'T>(value: 'T, ?status: int): Response = jsNative
+
+    [<Emit("Response.redirect($0, $1)")>]
+    static member redirect(url: string, ?status: int): Response = jsNative
+
+    [<Emit("Response.error()")>]
+    static member error(): Response = jsNative
 
 [<Emit("new AbortController()")>]
 let newAbortController () : AbortController = jsNative
