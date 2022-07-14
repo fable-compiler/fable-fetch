@@ -30,9 +30,9 @@ Normally you don't need to use Response manually but, if you are in a service wo
 
 ```fsharp
 Response.create("Hello World!", [Status 200; ])
-Response.create("Teapot!", [Status 418; Headers ["x-tea", "green"] ])
-Response.create("Bad Request!", [Status 400; Headers ["x-custom", "fable"] ])
-Response.create("""{ "message": "Bad Request!" }""", [Status 400; Headers ["content-type", "application/json"] ])
+Response.create("Teapot!", [Status 418; Headers [| "x-tea", "green" |] ])
+Response.create("Bad Request!", [Status 400; Headers [| "x-custom", "fable" |] ])
+Response.create("""{ "message": "Bad Request!" }""", [Status 400; Headers [| "content-type", "application/json" |] ])
 Response.create(
   Blob.Create([| csvfile |], unbox {| ``type`` = "text/csv" |}),
   [ Status 200; Headers ["content-type", "text/csv"] ]
