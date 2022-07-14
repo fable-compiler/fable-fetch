@@ -401,8 +401,54 @@ module Types =
         | Integrity of string
         | KeepAlive of bool
         | Signal of AbortSignal
+    
+    type ResponseInitProperties =
+        | Status of int
+        | StatusText of string
+        | Headers of (string * string)[]
+
+[<Emit("new Response($0...)")>]
+let private createResponseInit (content: obj, options: obj) = jsNative
 
 type Response with
+
+    [<Emit("new Response($0...)")>]
+    static member create(content: string, ?options: ResponseInit) = jsNative
+    [<Emit("new Response($0...)")>]
+    static member create(content: Blob, ?options: ResponseInit) = jsNative
+    [<Emit("new Response($0...)")>]
+    static member create(content: JS.ArrayBuffer, ?options: ResponseInit) = jsNative
+    [<Emit("new Response($0...)")>]
+    static member create(content: JS.ArrayBufferView, ?options: ResponseInit) = jsNative
+
+    static member inline create(content: string, ?options: seq<ResponseInitProperties>) =
+        let options = defaultArg options Seq.empty
+
+        let opts = options |> keyValueList CaseRules.LowerFirst
+
+        createResponseInit (content, opts)
+
+    static member inline create(content: Blob, ?options: seq<ResponseInitProperties>) =
+        let options = defaultArg options Seq.empty
+
+        let opts = options |> keyValueList CaseRules.LowerFirst
+
+        createResponseInit (content, opts)
+
+    static member inline create(content: JS.ArrayBuffer, ?options: seq<ResponseInitProperties>) =
+        let options = defaultArg options Seq.empty
+
+        let opts = options |> keyValueList CaseRules.LowerFirst
+
+        createResponseInit (content, opts)
+
+    static member inline create(content: JS.ArrayBufferView, ?options: seq<ResponseInitProperties>) =
+        let options = defaultArg options Seq.empty
+
+        let opts = options |> keyValueList CaseRules.LowerFirst
+
+        createResponseInit (content, opts)
+
     [<Emit("Response.json($0...)")>]
     static member json<'T>(value: 'T, ?status: int): Response = jsNative
 
