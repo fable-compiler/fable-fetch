@@ -5,7 +5,7 @@ Fable bindings for Browsers' [Fetch API](https://developer.mozilla.org/en-US/doc
 If you need helpers for automatic JSON serialization, check [Thoth.Fetch](https://github.com/thoth-org/Thoth.Fetch#thothfetch-).
 
 - Run tests: `npm test`
-- Publish: `npm run publish`
+- Publish: `npm run publish` (first bump version in RELEASE_NOTES.md and put your Nuget key in NUGET_KEY env var)
 
 ## Usage
 
