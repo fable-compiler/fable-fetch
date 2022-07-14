@@ -179,9 +179,9 @@ describe "Fetch tests" <| fun _ ->
         let promise =
           tryFetch "https://fable.io" props
           |> Promise.map (function
-              | Error e when e.Message = "Aborted" -> failMessage
               | Ok a -> "Request was never cancelled"
-              | Error e -> "Something else went wrong")
+              | Error e when e.Message.ToLower().Contains("aborted") -> failMessage
+              | Error e -> $"Something else went wrong: {e.Message}")
           |> Promise.map (fun results ->
               results |> equal failMessage)
 
