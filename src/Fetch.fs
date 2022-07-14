@@ -408,32 +408,23 @@ module Types =
         | Headers of (string * string)[]
 
 [<Emit("new Response($0...)")>]
-let private createResponseInit (content: obj, options: obj) = jsNative
+let private createResponseInit (content: obj, options: obj): Response = jsNative
 
 type Response with
 
-    [<Emit("new Response($0...)")>]
-    static member create(content: string, ?options: ResponseInit) = jsNative
-    [<Emit("new Response($0...)")>]
-    static member create(content: Blob, ?options: ResponseInit) = jsNative
-    [<Emit("new Response($0...)")>]
-    static member create(content: JS.ArrayBuffer, ?options: ResponseInit) = jsNative
-    [<Emit("new Response($0...)")>]
-    static member create(content: JS.ArrayBufferView, ?options: ResponseInit) = jsNative
-
-    static member inline create(content: string, ?options: seq<ResponseInitProperties>) =
+    static member inline create(content: string, ?options: seq<ResponseInitProperties>) : Response =
         let options = defaultArg options Seq.empty
         createResponseInit (content, keyValueList CaseRules.LowerFirst options)
 
-    static member inline create(content: Blob, ?options: seq<ResponseInitProperties>) =
+    static member inline create(content: Blob, ?options: seq<ResponseInitProperties>) : Response =
         let options = defaultArg options Seq.empty
         createResponseInit (content, keyValueList CaseRules.LowerFirst options)
 
-    static member inline create(content: JS.ArrayBuffer, ?options: seq<ResponseInitProperties>) =
+    static member inline create(content: JS.ArrayBuffer, ?options: seq<ResponseInitProperties>) : Response =
         let options = defaultArg options Seq.empty
         createResponseInit (content, keyValueList CaseRules.LowerFirst options)
 
-    static member inline create(content: JS.ArrayBufferView, ?options: seq<ResponseInitProperties>) =
+    static member inline create(content: JS.ArrayBufferView, ?options: seq<ResponseInitProperties>) : Response =
         let options = defaultArg options Seq.empty
         createResponseInit (content, keyValueList CaseRules.LowerFirst options)
 
