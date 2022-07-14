@@ -298,3 +298,21 @@ describe "Fetch tests" <| fun _ ->
         let response = Response.create(expected)
         response.text()
         |> Promise.map(fun actual -> equal expected actual)
+
+    it "Response.create(string, options) creates a Response with a 400 status code" <| fun () ->
+        let expected = "Hello, World!"
+        let response = Response.create(expected, [Status 400])
+        response.text()
+        |> Promise.map(fun actual ->
+        equal expected actual
+        equal response.Status 400
+        )
+
+    it "Response.create(string, options) creates a Response with x-custom header" <| fun () ->
+        let expected = "Hello, World!"
+        let response = Response.create(expected, [Headers ["x-custom", "fable"]])
+        response.text()
+        |> Promise.map(fun actual ->
+        equal expected actual
+        equal (response.Headers.get "x-custom") "fable"
+        )
