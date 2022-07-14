@@ -24,4 +24,12 @@ let fetchGitHubUser accessToken =
   }
 ```
 
+Response Usage
+
+```fsharp
+Response.create("Hello World!", [Status 200; ])
+Response.create("Teapot!", [Status 418; Headers ["x-tea", "green"] ])
+Response.create("Bad Request!", [Status 400; Headers ["x-custom", "fable"] ])
+```
+
 Check the [tests](https://github.com/fable-compiler/fable-fetch/blob/master/tests/FetchTests.fs) for other examples.
