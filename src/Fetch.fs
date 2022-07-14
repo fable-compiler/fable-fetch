@@ -423,31 +423,19 @@ type Response with
 
     static member inline create(content: string, ?options: seq<ResponseInitProperties>) =
         let options = defaultArg options Seq.empty
-
-        let opts = options |> keyValueList CaseRules.LowerFirst
-
-        createResponseInit (content, opts)
+        createResponseInit (content, keyValueList CaseRules.LowerFirst options)
 
     static member inline create(content: Blob, ?options: seq<ResponseInitProperties>) =
         let options = defaultArg options Seq.empty
-
-        let opts = options |> keyValueList CaseRules.LowerFirst
-
-        createResponseInit (content, opts)
+        createResponseInit (content, keyValueList CaseRules.LowerFirst options)
 
     static member inline create(content: JS.ArrayBuffer, ?options: seq<ResponseInitProperties>) =
         let options = defaultArg options Seq.empty
-
-        let opts = options |> keyValueList CaseRules.LowerFirst
-
-        createResponseInit (content, opts)
+        createResponseInit (content, keyValueList CaseRules.LowerFirst options)
 
     static member inline create(content: JS.ArrayBufferView, ?options: seq<ResponseInitProperties>) =
         let options = defaultArg options Seq.empty
-
-        let opts = options |> keyValueList CaseRules.LowerFirst
-
-        createResponseInit (content, opts)
+        createResponseInit (content, keyValueList CaseRules.LowerFirst options)
 
     [<Emit("Response.json($0...)")>]
     static member json<'T>(value: 'T, ?status: int): Response = jsNative
