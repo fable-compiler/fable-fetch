@@ -26,10 +26,18 @@ let fetchGitHubUser accessToken =
 
 Response Usage
 
+Normally you don't need to use Response manually but, if you are in a service worker and intercepting fetch requests, you can programatically create responses that satisfy your logic, there are a few javascript runtimes that also offer http frameworks that work with responses directly so here is a few ways to create responses
+
 ```fsharp
 Response.create("Hello World!", [Status 200; ])
 Response.create("Teapot!", [Status 418; Headers ["x-tea", "green"] ])
 Response.create("Bad Request!", [Status 400; Headers ["x-custom", "fable"] ])
+Response.create("""{ "message": "Bad Request!" }""", [Status 400; Headers ["content-type", "application/json"] ])
+Response.create(
+  Blob.Create([| csvfile |], unbox {| ``type`` = "text/csv" |}),
+  [ Status 200; Headers ["content-type", "text/csv"] ]
+)
+
 ```
 
 Check the [tests](https://github.com/fable-compiler/fable-fetch/blob/master/tests/FetchTests.fs) for other examples.
