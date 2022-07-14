@@ -304,15 +304,15 @@ describe "Fetch tests" <| fun _ ->
         let response = Response.create(expected, [Status 400])
         response.text()
         |> Promise.map(fun actual ->
-        equal expected actual
-        equal response.Status 400
+            equal expected actual
+            equal response.Status 400
         )
 
     it "Response.create(string, options) creates a Response with x-custom header" <| fun () ->
         let expected = "Hello, World!"
-        let response = Response.create(expected, [Headers ["x-custom", "fable"]])
+        let response = Response.create(expected, [(Headers [|"x-custom", "fable"|])])
         response.text()
         |> Promise.map(fun actual ->
-        equal expected actual
-        equal (response.Headers.get "x-custom") "fable"
+            equal expected actual
+            equal (response.Headers.get "x-custom") "fable"
         )
