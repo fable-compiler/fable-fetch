@@ -292,3 +292,9 @@ describe "Fetch tests" <| fun _ ->
     //         res.StartsWith("Error at: `$.last`\nExpecting an object with a field named `last` but instead got:")
     //         |> equal true
     //     )
+
+    it "Response.create(string) creates a Text Response" <| fun () ->
+        let expected = "Hello, World!"
+        let response = Response.create(expected)
+        response.text()
+        |> Promise.map(fun actual -> equal expected actual)
