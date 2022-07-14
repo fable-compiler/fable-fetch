@@ -12,6 +12,6 @@
         "abortcontroller-polyfill": "^1.7.1",
         "fable-publish-utils": "^2.2.0",
         "isomorphic-fetch": "^3.0.0",
-        "mocha": "^8.2.1"
+        "mocha": "^10.0.0"
     }
 }
