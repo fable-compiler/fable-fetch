@@ -412,19 +412,19 @@ let private createResponseInit (content: obj, options: obj): Response = jsNative
 
 type Response with
 
-    static member inline create(content: string, ?options: seq<ResponseInitProperties>) : Response =
+    static member create(content: string, ?options: seq<ResponseInitProperties>) : Response =
         let options = defaultArg options Seq.empty
         createResponseInit (content, keyValueList CaseRules.LowerFirst options)
 
-    static member inline create(content: Blob, ?options: seq<ResponseInitProperties>) : Response =
+    static member create(content: Blob, ?options: seq<ResponseInitProperties>) : Response =
         let options = defaultArg options Seq.empty
         createResponseInit (content, keyValueList CaseRules.LowerFirst options)
 
-    static member inline create(content: JS.ArrayBuffer, ?options: seq<ResponseInitProperties>) : Response =
+    static member create(content: JS.ArrayBuffer, ?options: seq<ResponseInitProperties>) : Response =
         let options = defaultArg options Seq.empty
         createResponseInit (content, keyValueList CaseRules.LowerFirst options)
 
-    static member inline create(content: JS.ArrayBufferView, ?options: seq<ResponseInitProperties>) : Response =
+    static member create(content: JS.ArrayBufferView, ?options: seq<ResponseInitProperties>) : Response =
         let options = defaultArg options Seq.empty
         createResponseInit (content, keyValueList CaseRules.LowerFirst options)
 
