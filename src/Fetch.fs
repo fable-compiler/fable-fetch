@@ -155,7 +155,7 @@ module Types =
         [<Emit("$0.get('Content-MD5')")>] abstract ContentMD5: string option
 
         /// Where in a full body message this partial message belongs
-        [<Emit("$0.get('Content-Range'')")>] abstract ContentRange: string option
+        [<Emit("$0.get('Content-Range')")>] abstract ContentRange: string option
 
         /// The MIME type of this content
         [<Emit("$0.get('Content-Type')")>] abstract ContentType: string option
