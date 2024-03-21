@@ -1,3 +1,7 @@
+### 2.7.0
+
+- Fix JS output for ContentRange (by @Darkle)
+
 ### 2.6.0
 
 - Add create overload for Response objects
